@@ -1,0 +1,91 @@
+
+NOTES: 
+
+- In the examples of SQL statments below I used my netid ajb254, and you need to change that to your NETID
+
+- If you want to RERUN the create view commands you will get the error message that view is already created. Here is an example fo the error message:
+
+xyz=> CREATE TEMP VIEW ajb254rightview AS SELECT * FROM pilot.mail;
+ERROR:  relation "ajb254rightview" already exists
+
+
+- So you need to clean up before you create the view again, and you clean up by dropping the temp view
+
+xyz=> drop view ajb254leftview;
+DROP VIEW
+xyz=> drop view ajb254rightview;
+DROP VIEW
+xyz=> drop view ajb254join;
+
+
+
+
+
+
+__________________________________________________________________________________________________________
+
+
+
+
+Step 1: Connect dornick
+
+
+
+Step 2: Connect to postgree database server:
+
+psql -h 129.105.208.226 -U ajb254 -d postgres
+
+
+
+Step 3: Connect databse instance
+\c xyz
+
+
+
+Step 4: Get the attributes/columns/rows from CUSTOMER table in a VIEW
+
+CREATE TEMP VIEW ajb254leftview AS SELECT acctno AS customerid, ltd_sales, ltd_transactions, ytd_sales_2009, ytd_transactions_2009 FROM pilot.customer;
+
+
+
+Step 5: (Sanity Test - do you see records in your view/table?)
+
+select * from zml3464leftview limit 20;
+
+
+
+Step 6:  Get the attributes/columns/rows from MAIL table in a VIEW
+
+CREATE TEMP VIEW zml3464rightview AS SELECT * FROM pilot.mail;
+
+
+
+Step 7: (Sanity Test - do you see records in your view/table?)
+
+select * from zml3464rightview limit 20;
+
+
+
+Step 8: (Do a LEFT OUTER JOIN)
+CREATE TEMP VIEW zml3464join AS SELECT * FROM zml3464leftview LEFT OUTER JOIN zml3464rightview ON customerid = acctno;
+
+
+
+Step 9: (Sanity Test - do you see records in your view/table?)
+
+select * from zml3464join limit 20;
+
+
+
+Step 10: (What are the attributes in your view/table?)
+
+ \d zml3464join
+
+
+
+Step 11: (Create CSV file)
+
+\copy (SELECT * FROM zml3464join LIMIT 100) TO ‘zml3464join.csv' WITH DELIMITER ',' NULL AS '\null' CSV HEADER
+
+
+

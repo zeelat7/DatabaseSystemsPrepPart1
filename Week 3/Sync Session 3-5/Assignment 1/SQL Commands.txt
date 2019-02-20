@@ -1,0 +1,55 @@
+
+After you login into dornick using PuTTY or xterm
+Execute the following IN ORDER listed
+__________________________________________________
+
+
+
+Step 1:
+psql -h 129.105.208.226 -U ajb254 -d postgres
+
+Step 2:
+\l
+
+Step 3:
+\c xyz
+
+Step 4:
+SELECT COUNT(acctno) FROM pilot.item;
+
+
+Step 5: 
+\d pilot.item
+
+Step 6:
+SELECT * FROM pilot.item limit 5;
+
+Step 7:
+CREATE TEMP VIEW ajb254work as SELECT * FROM pilot.item WHERE extract(month FROM trandate) = 1;
+
+Step 8:
+SELECT count(acctno) FROM ajb254work;
+
+Step 9:
+SELECT * FROM ajb254work limit 5;
+
+Step 10:
+\copy (SELECT * FROM ajb254work) TO 'ajb254work.csv' WITH DELIMITER ','  NULL AS '\null' CSV HEADER
+
+Step 11:
+\q
+
+Step 12: 
+pwd
+
+Step 13:
+ls -l  
+
+Step 14:
+more  ajb254work.csv
+
+Step 15:
+q
+
+Step 16:
+logout
